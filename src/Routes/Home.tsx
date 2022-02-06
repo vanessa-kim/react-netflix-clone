@@ -5,8 +5,8 @@ import styled from "styled-components";
 import { IMovie, getMovies, getTopRatedMovies, getUpcomingMovies, IGetMoviesResult } from '../api';
 import { makeImagePath } from "../utils";
 import { BiInfoCircle } from "react-icons/bi";
-import Slider from '../Components/Slider';
-import Modal from '../Components/Modal';
+import SliderMovie from '../Components/SliderMovie';
+import ModalMovie from '../Components/ModalMovie';
 
 const Wrapper = styled.div`
   background: black;
@@ -133,13 +133,13 @@ function Home() {
             </DetailBtn>
           </Banner>
           <SliderTitle>지금 상영중인 콘텐츠</SliderTitle>
-          { nowPlayingMovies && <Slider {...nowPlayingMovies} /> }
+          { nowPlayingMovies && <SliderMovie {...nowPlayingMovies} /> }
           <SliderTitle>Top Rated Movies 오늘 한국의 TOP 10 콘텐츠</SliderTitle>
-          { topRatedMovies && <Slider {...topRatedMovies} />}
+          { topRatedMovies && <SliderMovie {...topRatedMovies} />}
           <SliderTitle>Upcoming Movies 개봉 예정 콘텐츠</SliderTitle>
-          { upcomingMovies && <Slider {...upcomingMovies} />}
+          { upcomingMovies && <SliderMovie {...upcomingMovies} />}
           <AnimatePresence>
-            { bigMovieMatch ? (clickedMovie && <Modal {...clickedMovie} />) : null }
+            { bigMovieMatch ? (clickedMovie && <ModalMovie {...clickedMovie} />) : null }
           </AnimatePresence>
         </>
       ) }

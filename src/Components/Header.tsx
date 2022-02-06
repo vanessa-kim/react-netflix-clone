@@ -14,9 +14,10 @@ const Nav = styled(motion.nav)`
   width: 100%;
   top: 0;
   font-size: 14px;
-  padding: 20px 60px;
+  padding: 20px 160px 20px 60px;
   color: white;
   box-sizing: border-box;
+  z-index: 1;
 `;
 
 const Col = styled.div`
@@ -80,9 +81,9 @@ const Input = styled(motion.input)`
   background-color: transparent;
   border: 0;
   color: #ddd;
-  border: 1px solid #ddd;
-  padding: 5px 10px;
-  padding-left: 40px;
+  border: 2px solid #ddd;
+  padding: 8px 15px;
+  padding-left: 45px;
   z-index: -1;
 `;
 
@@ -99,23 +100,28 @@ const Circle = styled(motion.span)`
 `;
 
 const Profile = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   color: white;
   cursor: pointer;
   margin-left: 30px;
+  height: 150px;
+  padding: 16px 0;
+  width: 125px;
 
   svg {
     margin-left: 10px;
+    margin-top: 13px;
   }
 `;
 
-const ProfileBtn = styled.div<{ bgImage: string }>`
+const ProfileBtn = styled.img`
   width: 36px;
   height: 36px;
   border-radius: 8px;
-  background-image: url(${props => props.bgImage});
-  background-size: cover;
 `;
 
 const ProfileList = styled.ul`
@@ -125,6 +131,7 @@ const ProfileList = styled.ul`
   top: 60px;
   right: 50px;
   background-color: ${props => props.theme.black.veryDark};
+  z-index: 10;
 
   li {
     display: flex;
@@ -251,7 +258,7 @@ function Header() {
         <Search onSubmit={handleSubmit(onValid)}>
           <motion.svg
             onClick={toggleSearch}
-            animate={{x: searchOpen ? -185 : 0}}
+            animate={{x: searchOpen ? -195 : 0}}
             transition={{type: 'linear'}}
             fill="currentColor"
             viewBox="0 0 20 20"
@@ -271,14 +278,18 @@ function Header() {
             placeholder="Search for movie or tv show..." 
           />
         </Search>
-        <Profile onClick={()=> setProfileOpen(prev => !prev)}>
-          <ProfileBtn bgImage="img/profile.png" />
+        <Profile 
+          onClick={()=> setProfileOpen(prev => !prev)}
+          onMouseOver={()=> setProfileOpen(true)}
+        >
+          <ProfileBtn src="img/profile.png" />
           <BsCaretDownFill style={{ 
             transition: '0.3s', 
             transform: `rotateZ( ${profileOpen ? '180deg' : '0' })`
           }} />
           { profileOpen ? (
-            <ProfileList>
+            <ProfileList 
+            onMouseOut={()=> setProfileOpen(false)}>
               <li>
                 <img src="img/user1.png" />
                 Anna

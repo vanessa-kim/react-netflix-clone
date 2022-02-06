@@ -2,7 +2,7 @@ import { motion, AnimatePresence, useViewportScroll } from "framer-motion";
 import { useNavigate, useMatch } from "react-router-dom";
 import { makeImagePath } from "../utils";
 import styled from "styled-components";
-import { IMovie, getMoviesGenre, IGenres, IGenre, getMoviesCredits, ICredits } from '../api';
+import { IMovie, getMoviesGenre, IGenres, IGenre, getMoviesCredits } from '../api';
 import { useQuery } from "react-query";
 import { BsPlusLg, BsHandThumbsUp, BsHandThumbsDown } from "react-icons/bs";
 import { useState, useEffect } from "react";
@@ -146,7 +146,7 @@ const ThumbBtn = styled.button`
   }
 `;
 
-function Modal(clickedMovie?: IMovie ) {
+function ModalMovie(clickedMovie?: IMovie ) {
   const path = useLocation();
   const navigate = useNavigate();
   const { scrollY } = useViewportScroll();
@@ -164,7 +164,6 @@ function Modal(clickedMovie?: IMovie ) {
   useEffect(()=>{
     let pathId = path?.pathname?.split('/')[2];
     pathId && setId(pathId);
-    console.log(id);
   }, [path]);
 
   let genreList = clickedMovie?.genre_ids.map(genre => {
@@ -192,9 +191,10 @@ function Modal(clickedMovie?: IMovie ) {
                 url(${makeImagePath(clickedMovie.backdrop_path, 'w500')})
               `
             }} />
-            <BigTitle>{clickedMovie.title}</BigTitle>
+            <BigTitle>{ clickedMovie.title }</BigTitle>
             <Tags>
-              <Year>{clickedMovie?.release_date?.split('-')[0]}</Year>
+              <Year>{ clickedMovie?.release_date?.split('-')[0] }
+              </Year>
               <Vote>평점: {clickedMovie?.vote_average}</Vote>
             </Tags>
             <ThumbsGroup>
@@ -219,7 +219,7 @@ function Modal(clickedMovie?: IMovie ) {
             </Genres>
             <CastList>
               <OverviewTitle>출연:</OverviewTitle>
-              {casts && casts.cast.slice(0, 3).map((cast: any, index: number) => (
+              {casts && casts.cast && casts.cast.length > 0 && casts.cast.slice(0, 3).map((cast: any, index: number) => (
                 <li key={index}>
                   {cast?.name}
                   {cast && index === cast?.length - 1 ? null: ','}
@@ -234,4 +234,4 @@ function Modal(clickedMovie?: IMovie ) {
   );
 }
 
-export default Modal;
+export default ModalMovie;

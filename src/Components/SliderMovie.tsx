@@ -5,6 +5,7 @@ import { useNavigate, useMatch } from "react-router-dom";
 import { useState } from "react";
 import { IGetMoviesResult } from '../api';
 import { makeImagePath } from "../utils";
+import { useLocation } from "react-router-dom";
 
 const SlideWrapper = styled.div`
   position: relative;
@@ -50,6 +51,7 @@ const Info = styled(motion.div)`
   h4 {
     text-align: center;
     font-size: 18px;
+    width: 100%;
   }
 `;
 
@@ -114,7 +116,8 @@ const infoVariants = {
 
 const offset = 6;
 
-function Slider(data: IGetMoviesResult) {
+function SliderMovie(data: IGetMoviesResult) {
+  const location = useLocation();
   const navigate = useNavigate();
   const [index, setIndex] = useState(0);
   const [goBack, setGoBack] = useState(false);
@@ -140,11 +143,13 @@ function Slider(data: IGetMoviesResult) {
       setIndex(prev => prev === 0 ? -3 : prev - 1);
     }
   };
-
+  let isHome = location && location?.pathname + '' === '/';
   const onBoxClicked = (movieId: string) => {
-    navigate(`/movies/${movieId}`);
+    navigate( isHome ? 
+              `/movies/${movieId}` : 
+              `/tv/${movieId}`
+            );
   }
-
   return (
     <>
       <SlideWrapper>
@@ -166,7 +171,7 @@ function Slider(data: IGetMoviesResult) {
               .slice(offset * index, offset * index + offset)
               .map(movie => (
                 <Box 
-                  layoutId={movie.id + ''}
+                  layoutId={movie.id+''}
                   key={movie.id}
                   whileHover="hover"
                   initial="normal"
@@ -176,7 +181,7 @@ function Slider(data: IGetMoviesResult) {
                   onClick={() => onBoxClicked(movie.id + '')}
                 >
                   <Info variants={infoVariants}>
-                    <h4>{movie.title}</h4>
+                    <h4>{isHome ? movie?.title : movie?.name}</h4>
                   </Info>
                 </Box>
             ))}
@@ -193,4 +198,4 @@ function Slider(data: IGetMoviesResult) {
   );
 }
 
-export default Slider;
+export default SliderMovie;
