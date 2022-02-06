@@ -1,9 +1,10 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { motion, useAnimation, useViewportScroll } from "framer-motion";
+import { AnimatePresence, motion, useAnimation, useViewportScroll } from "framer-motion";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { BsCaretDownFill } from "react-icons/bs";
 
 const Nav = styled(motion.nav)`
   display: flex;
@@ -64,6 +65,8 @@ const Search = styled(motion.form)`
   display: flex;
   color: white;
   align-items: center;
+  cursor: pointer;
+
   svg {
     height: 25px;
     fill: white;
@@ -95,6 +98,65 @@ const Circle = styled(motion.span)`
   background-color: ${(props) => props.theme.red};
 `;
 
+const Profile = styled.div`
+  display: flex;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+  margin-left: 30px;
+
+  svg {
+    margin-left: 10px;
+  }
+`;
+
+const ProfileBtn = styled.div<{ bgImage: string }>`
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background-image: url(${props => props.bgImage});
+  background-size: cover;
+`;
+
+const ProfileList = styled.ul`
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  top: 60px;
+  right: 50px;
+  background-color: ${props => props.theme.black.veryDark};
+
+  li {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 10px 20px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    img {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      margin-right: 10px;
+    }
+  }
+
+  div {
+    padding: 10px 0;
+    border-top: 1px solid ${props => props.theme.black.lighter};
+
+    p {
+      padding: 5px 20px;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+`;
+
 const logoVariants = {
   normal: {
     fillOpacity: 1,
@@ -109,10 +171,10 @@ const logoVariants = {
 
 const navVariants = {
   top: {
-    backgroundColor: 'rgba(0,0,0,1)',
+    backgroundColor: 'rgba(0,0,0,0)',
   },
   scroll: {
-    backgroundColor: 'rgba(0,0,0,0)',
+    backgroundColor: 'rgba(0,0,0,1)',
   },
 }
 
@@ -122,6 +184,7 @@ interface IForm {
 
 function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
   const matchLocation = useLocation();
   const inputAnimation = useAnimation();
   const navAnimation = useAnimation();
@@ -174,10 +237,13 @@ function Header() {
         </Logo>
         <Items>
           <Item>
-            <Link to="">Home {matchLocation?.pathname === '/' && <Circle layoutId="circle" />}</Link>
+            <Link to="">홈 {matchLocation?.pathname === '/' && <Circle layoutId="circle" />}</Link>
           </Item>
           <Item>
-            <Link to="tv">Tv Shows {matchLocation?.pathname === '/tv' && <Circle layoutId="circle" />}</Link>
+            <Link to="tv">TV 시리즈 {matchLocation?.pathname === '/tv' && <Circle layoutId="circle" />}</Link>
+          </Item>
+          <Item>
+            <Link to="mylist">내가 찜한 콘텐츠 {matchLocation?.pathname === '/mylist' && <Circle layoutId="circle" />}</Link>
           </Item>
         </Items>
       </Col>
@@ -205,6 +271,33 @@ function Header() {
             placeholder="Search for movie or tv show..." 
           />
         </Search>
+        <Profile onClick={()=> setProfileOpen(prev => !prev)}>
+          <ProfileBtn bgImage="img/profile.png" />
+          <BsCaretDownFill style={{ 
+            transition: '0.3s', 
+            transform: `rotateZ( ${profileOpen ? '180deg' : '0' })`
+          }} />
+          { profileOpen ? (
+            <ProfileList>
+              <li>
+                <img src="img/user1.png" />
+                Anna
+              </li>
+              <li>
+                <img src="img/user2.png" />
+                Olaf
+              </li>
+              <li>
+                <img src="img/user3.png" />
+                Christopher
+              </li>
+              <div>
+                <p>계정</p>
+                <p>고객센터</p>
+                <p>넷플릭스에서 로그아웃</p>
+              </div>
+            </ProfileList> ) : null }
+        </Profile>
       </Col>
     </Nav>
   );
