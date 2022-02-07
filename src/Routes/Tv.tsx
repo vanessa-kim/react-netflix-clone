@@ -2,7 +2,7 @@ import { AnimatePresence } from "framer-motion";
 import { useQuery } from "react-query";
 import { useMatch } from "react-router-dom";
 import styled from "styled-components";
-import { getTvAiring, getTvPopular, getTvRated, IMovie, IGetMoviesResult } from '../api';
+import { getTvAiring, getTvPopular, getTvRated, IMovie, } from '../api';
 import SliderTv from '../Components/SliderTv';
 import ModalTv from '../Components/ModalTv';
 
@@ -64,11 +64,11 @@ function Tv() {
     <>
       {airingLoading || popularLoading || ratedLoading ? 'loading...' : (
         <Wrapper>
-          <SliderTitle>Airing Today / 지금 상영중인 콘텐츠</SliderTitle>
+          <SliderTitle>Airing Today 지금 상영중인 콘텐츠</SliderTitle>
           { airingTv && <SliderTv {...airingTv} /> }
-          <SliderTitle>Popular /지금 상영중인 콘텐츠</SliderTitle>
+          <SliderTitle>Popular 지금 상영중인 콘텐츠</SliderTitle>
           { popularTv && <SliderTv {...popularTv} /> }
-          <SliderTitle>Top Rated /지금 상영중인 콘텐츠</SliderTitle>
+          <SliderTitle>Top Rated 지금 상영중인 콘텐츠</SliderTitle>
           { popularTv && <SliderTv {...ratedTv} /> }
           <AnimatePresence>
             { bigTvMatch ? (clickedTv && <ModalTv {...clickedTv} />) : null }

@@ -7,6 +7,8 @@ import { useQuery } from "react-query";
 import { BsPlusLg, BsHandThumbsUp, BsHandThumbsDown } from "react-icons/bs";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { searchKeyword } from '../atoms';
 
 const Overlay = styled(motion.div)`
   position: fixed;
@@ -27,6 +29,7 @@ const BigMovie = styled(motion.div)`
   background-color: ${props => props.theme.black.darker};
   border-radius: 15px;
   overflow: hidden;
+  min-width: 600px;
 `;
 
 const BigCover = styled.div`
@@ -151,6 +154,7 @@ function ModalTv(clickedTv: IMovie) {
   const navigate = useNavigate();
   const { scrollY } = useViewportScroll();
   const bigMovieMatch = useMatch('/tv/:tvId');
+  const searchMatch = useMatch('/search/:tvId');
   const [id, setId] = useState('');
   const { isLoading, data } = useQuery<IGenres>(
     ['genre', 'tv'],
@@ -165,9 +169,13 @@ function ModalTv(clickedTv: IMovie) {
   let genreList = clickedTv?.genre_ids.map(genre => {
     return data?.genres?.find((item: IGenre) => +item.id === +genre);
   });
+  const keyword = useRecoilValue(searchKeyword);
   const onOverlayClick = () => {
-    navigate('/tv')
+    const currentPath = path.pathname.split('/')[1];
+    if (currentPath === 'tv') return navigate('/tv');
+    if (currentPath === 'search') return navigate(`/search?keyword=${keyword}`);
   };
+
   return (
     <>
       <Overlay 
@@ -176,7 +184,7 @@ function ModalTv(clickedTv: IMovie) {
         exit={{ opacity: 0 }}
       />
       <BigMovie
-        layoutId={bigMovieMatch?.params.tvId + '' || id + ''}
+        layoutId={bigMovieMatch?.params.tvId || searchMatch?.params.tvId || id }
         style={{ top: scrollY.get() + 100 }}
       >
         { clickedTv && (

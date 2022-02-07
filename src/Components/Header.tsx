@@ -5,6 +5,8 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { BsCaretDownFill } from "react-icons/bs";
+import { useRecoilState } from "recoil";
+import { searchKeyword } from '../atoms';
 
 const Nav = styled(motion.nav)`
   display: flex;
@@ -220,10 +222,14 @@ function Header() {
     });
   }, [scrollY, navAnimation]);
   const navigate = useNavigate();
-  const {register, handleSubmit} = useForm<IForm>();
+  const {register, handleSubmit, reset } = useForm<IForm>();
+  const [keyword, setKeyword] = useRecoilState<string>(searchKeyword);
+
   const onValid = (data: IForm) => {
+    setKeyword(data?.keyword);
     navigate(`/search?keyword=${data.keyword}`);
   };
+  
   return (
     <Nav 
       variants={navVariants}
@@ -249,9 +255,6 @@ function Header() {
           <Item>
             <Link to="tv">TV 시리즈 {matchLocation?.pathname === '/tv' && <Circle layoutId="circle" />}</Link>
           </Item>
-          <Item>
-            <Link to="mylist">내가 찜한 콘텐츠 {matchLocation?.pathname === '/mylist' && <Circle layoutId="circle" />}</Link>
-          </Item>
         </Items>
       </Col>
       <Col>
@@ -275,7 +278,7 @@ function Header() {
             animate={inputAnimation}
             initial={{ scaleX: 0 }}
             transition={{ type: 'linear' }} 
-            placeholder="Search for movie or tv show..." 
+            placeholder="Search for movie or tv show..."
           />
         </Search>
         <Profile 

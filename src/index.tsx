@@ -6,9 +6,9 @@ import App from './App';
 import { createGlobalStyle } from "styled-components";
 import { theme } from "./theme";
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from "react-query/devtools";
 
 const GlobalStyle = createGlobalStyle`
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -65,6 +65,8 @@ body {
   color: ${props => props.theme.white.darker };
   line-height: 1.2;
   background-color: black;
+  min-width: 1200px;
+  overflow: auto;
 }
 a {
   text-decoration:none;
@@ -81,6 +83,7 @@ ReactDOM.render(
         <ThemeProvider theme={theme}>
           <GlobalStyle />
           <App />
+          <ReactQueryDevtools />
         </ThemeProvider>
       </QueryClientProvider>
     </RecoilRoot>

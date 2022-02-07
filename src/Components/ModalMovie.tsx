@@ -1,4 +1,4 @@
-import { motion, AnimatePresence, useViewportScroll } from "framer-motion";
+import { motion, useViewportScroll } from "framer-motion";
 import { useNavigate, useMatch } from "react-router-dom";
 import { makeImagePath } from "../utils";
 import styled from "styled-components";
@@ -7,6 +7,8 @@ import { useQuery } from "react-query";
 import { BsPlusLg, BsHandThumbsUp, BsHandThumbsDown } from "react-icons/bs";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { searchKeyword } from '../atoms';
 
 const Overlay = styled(motion.div)`
   position: fixed;
@@ -27,6 +29,7 @@ const BigMovie = styled(motion.div)`
   background-color: ${props => props.theme.black.darker};
   border-radius: 15px;
   overflow: hidden;
+  min-width: 600px;
 `;
 
 const BigCover = styled.div`
@@ -151,6 +154,8 @@ function ModalMovie(clickedMovie?: IMovie ) {
   const navigate = useNavigate();
   const { scrollY } = useViewportScroll();
   const bigMovieMatch = useMatch('/movies/:movieId');
+  const searchMatch = useMatch('/search/:movieId');
+
   const [id, setId] = useState('');
   const { isLoading, data } = useQuery<IGenres>(
     ['genre', 'movies'],
@@ -169,8 +174,11 @@ function ModalMovie(clickedMovie?: IMovie ) {
   let genreList = clickedMovie?.genre_ids.map(genre => {
     return data?.genres?.find((item: IGenre) => +item.id === +genre);
   });
+  const keyword = useRecoilValue(searchKeyword);
   const onOverlayClick = () => {
-    navigate('/')
+    const currentPath = path.pathname.split('/')[1];
+    if (currentPath === 'movies') return navigate('/');
+    if (currentPath === 'search') return navigate(`/search?keyword=${keyword}`);
   };
   return (
     <>
@@ -180,7 +188,7 @@ function ModalMovie(clickedMovie?: IMovie ) {
         exit={{ opacity: 0 }}
       />
       <BigMovie
-        layoutId={bigMovieMatch?.params.movieId || id}
+        layoutId={bigMovieMatch?.params.movieId || searchMatch?.params.movieId || id}
         style={{ top: scrollY.get() + 100 }}
       >
         { clickedMovie && (

@@ -89,3 +89,14 @@ export function getTvGenre() {
   return fetch(`${BASE_PATH}/genre/tv/list?api_key=${API_KEY}&language=ko`)
     .then(res => res.json());
 }
+
+// search
+export function getMovieSearch(keyword: string) {
+  return fetch(`${BASE_PATH}/search/movie?api_key=${API_KEY}&query=${keyword}&language=ko&page=1`)
+    .then(res => res.json());
+}
+
+export function getTvSearch(keyword: string) {
+  return fetch(`${BASE_PATH}/search/tv?api_key=${API_KEY}&query=${keyword}&language=ko&page=1`)
+    .then(res => res.json());
+}
