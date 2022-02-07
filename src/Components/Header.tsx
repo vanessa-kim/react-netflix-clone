@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { BsCaretDownFill } from "react-icons/bs";
 import { useRecoilState } from "recoil";
-import { searchKeyword } from '../atoms';
+import { searchKeyword } from '../atoms'
 
 const Nav = styled(motion.nav)`
   display: flex;
@@ -285,7 +285,7 @@ function Header() {
           onClick={()=> setProfileOpen(prev => !prev)}
           onMouseOver={()=> setProfileOpen(true)}
         >
-          <ProfileBtn src="/img/profile.png" />
+          <ProfileBtn src={`${process.env.PUBLIC_URL}/img/profile.png`} />
           <BsCaretDownFill style={{ 
             transition: '0.3s', 
             transform: `rotateZ( ${profileOpen ? '180deg' : '0' })`
@@ -294,15 +294,15 @@ function Header() {
             <ProfileList 
             onMouseOut={()=> setProfileOpen(false)}>
               <li>
-                <img src="/img/user1.png" />
+                <ProfileBtn src={`${process.env.PUBLIC_URL}/img/user_one.png`} />
                 Anna
               </li>
               <li>
-                <img src="/img/user2.png" />
+                <ProfileBtn src={`${process.env.PUBLIC_URL}/img/user_two.png`} />
                 Olaf
               </li>
               <li>
-                <img src="/img/user3.png" />
+                <ProfileBtn src={`${process.env.PUBLIC_URL}/img/user_three.png`} />
                 Christopher
               </li>
               <div>

@@ -90,7 +90,6 @@ function Home() {
   const navigate = useNavigate();
 
   // github.io 인 경우 path 혼선을 줄이기 위한 코드
-  console.log('pathname', location.pathname.split('/'));
   if(location.pathname.split('/')[1] === 'react-netflix-clone') {
     navigate('/');
   }
