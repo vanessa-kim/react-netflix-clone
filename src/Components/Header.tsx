@@ -285,7 +285,7 @@ function Header() {
           onClick={()=> setProfileOpen(prev => !prev)}
           onMouseOver={()=> setProfileOpen(true)}
         >
-          <ProfileBtn src="img/profile.png" />
+          <ProfileBtn src="/img/profile.png" />
           <BsCaretDownFill style={{ 
             transition: '0.3s', 
             transform: `rotateZ( ${profileOpen ? '180deg' : '0' })`
@@ -294,15 +294,15 @@ function Header() {
             <ProfileList 
             onMouseOut={()=> setProfileOpen(false)}>
               <li>
-                <img src="img/user1.png" />
+                <img src="/img/user1.png" />
                 Anna
               </li>
               <li>
-                <img src="img/user2.png" />
+                <img src="/img/user2.png" />
                 Olaf
               </li>
               <li>
-                <img src="img/user3.png" />
+                <img src="/img/user3.png" />
                 Christopher
               </li>
               <div>
